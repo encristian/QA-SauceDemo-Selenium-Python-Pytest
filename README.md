@@ -93,7 +93,7 @@ pytest --html=reports/report.html
 ## Current Test Status
 
 ```text
-3 passed
+7 passed
 ```
 
 ---
