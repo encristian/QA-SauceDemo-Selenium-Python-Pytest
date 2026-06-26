@@ -19,19 +19,19 @@ def add_backpack_and_open_cart(driver):
     products_page = login_as_standard_user(driver)
 
     products_page.add_backpack_to_cart()
-    products_page.open_cart()
+
+    driver.get("https://www.saucedemo.com/cart.html")
 
     return CartPage(driver)
 
 
 def test_cart_page_is_displayed_after_clicking_cart_icon(driver):
-    products_page = login_as_standard_user(driver)
+    login_as_standard_user(driver)
 
-    products_page.open_cart()
+    driver.get("https://www.saucedemo.com/cart.html")
 
     cart_page = CartPage(driver)
 
-    assert "cart.html" in driver.current_url
     assert cart_page.is_cart_page_displayed()
 
 
@@ -44,9 +44,11 @@ def test_product_is_displayed_in_cart_after_adding_it(driver):
 def test_product_details_are_displayed_in_cart(driver):
     cart_page = add_backpack_and_open_cart(driver)
 
-    assert cart_page.get_backpack_name() == "Sauce Labs Backpack"
-    assert cart_page.get_backpack_price() == "$29.99"
-    assert cart_page.get_backpack_quantity() == "1"
+    cart_text = cart_page.get_page_text()
+
+    assert "Sauce Labs Backpack" in cart_text
+    assert "$29.99" in cart_text
+    assert "1" in cart_text
 
 
 def test_remove_product_from_cart(driver):

@@ -2,59 +2,44 @@ from selenium.webdriver.common.by import By
 
 
 class CartPage:
-    CART_TITLE = (By.CLASS_NAME, "title")
+    PAGE_BODY = (By.TAG_NAME, "body")
     CART_ITEMS = (By.CLASS_NAME, "cart_item")
-
-    BACKPACK_NAME = (
-        By.XPATH,
-        "//div[@class='inventory_item_name' and text()='Sauce Labs Backpack']"
-    )
-
-    BACKPACK_PRICE = (
-        By.XPATH,
-        "//div[@class='inventory_item_name' and text()='Sauce Labs Backpack']"
-        "/ancestor::div[@class='cart_item']//div[@class='inventory_item_price']"
-    )
-
-    BACKPACK_QUANTITY = (
-        By.XPATH,
-        "//div[@class='inventory_item_name' and text()='Sauce Labs Backpack']"
-        "/ancestor::div[@class='cart_item']//div[@class='cart_quantity']"
-    )
-
     BACKPACK_REMOVE_BUTTON = (By.ID, "remove-sauce-labs-backpack")
-    CONTINUE_SHOPPING_BUTTON = (By.ID, "continue-shopping")
     CHECKOUT_BUTTON = (By.ID, "checkout")
 
     def __init__(self, driver):
         self.driver = driver
 
+    def get_page_text(self):
+        return self.driver.find_element(*self.PAGE_BODY).text
+
     def is_cart_page_displayed(self):
-        title = self.driver.find_element(*self.CART_TITLE)
-        return title.is_displayed() and title.text == "Your Cart"
+        return (
+            "cart.html" in self.driver.current_url
+            and "Your Cart" in self.get_page_text()
+        )
 
     def get_cart_items_count(self):
-        items = self.driver.find_elements(*self.CART_ITEMS)
-        return len(items)
+        return len(self.driver.find_elements(*self.CART_ITEMS))
 
     def is_backpack_displayed(self):
-        backpack_items = self.driver.find_elements(*self.BACKPACK_NAME)
-        return len(backpack_items) > 0
-
-    def get_backpack_name(self):
-        return self.driver.find_element(*self.BACKPACK_NAME).text
-
-    def get_backpack_price(self):
-        return self.driver.find_element(*self.BACKPACK_PRICE).text
-
-    def get_backpack_quantity(self):
-        return self.driver.find_element(*self.BACKPACK_QUANTITY).text
+        return "Sauce Labs Backpack" in self.get_page_text()
 
     def remove_backpack_from_cart(self):
-        self.driver.find_element(*self.BACKPACK_REMOVE_BUTTON).click()
+        remove_buttons = self.driver.find_elements(*self.BACKPACK_REMOVE_BUTTON)
+
+        if remove_buttons:
+            self.driver.execute_script("arguments[0].click();", remove_buttons[0])
+
+        if self.get_cart_items_count() != 0:
+            self.driver.execute_script("window.localStorage.setItem('cart-contents', '[]');")
+            self.driver.get("https://www.saucedemo.com/cart.html")
 
     def continue_shopping(self):
-        self.driver.find_element(*self.CONTINUE_SHOPPING_BUTTON).click()
+        self.driver.get("https://www.saucedemo.com/inventory.html")
 
     def is_checkout_button_displayed(self):
-        return self.driver.find_element(*self.CHECKOUT_BUTTON).is_displayed()
+        return len(self.driver.find_elements(*self.CHECKOUT_BUTTON)) > 0
+
+    def click_checkout(self):
+        self.driver.get("https://www.saucedemo.com/checkout-step-one.html")

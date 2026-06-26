@@ -1,4 +1,6 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class ProductsPage:
@@ -14,6 +16,7 @@ class ProductsPage:
 
     def __init__(self, driver):
         self.driver = driver
+        self.wait = WebDriverWait(driver, 10)
 
     def is_products_page_displayed(self):
         title = self.driver.find_element(*self.PRODUCTS_TITLE)
@@ -30,13 +33,14 @@ class ProductsPage:
         return self.driver.find_element(*self.FIRST_PRODUCT_PRICE).text
 
     def add_backpack_to_cart(self):
-        self.driver.find_element(*self.BACKPACK_ADD_TO_CART_BUTTON).click()
+        self.wait.until(EC.element_to_be_clickable(self.BACKPACK_ADD_TO_CART_BUTTON)).click()
 
     def is_remove_button_displayed(self):
         return self.driver.find_element(*self.BACKPACK_REMOVE_BUTTON).is_displayed()
 
     def get_cart_badge_text(self):
-        return self.driver.find_element(*self.CART_BADGE).text
+        return self.wait.until(EC.visibility_of_element_located(self.CART_BADGE)).text
 
     def open_cart(self):
-        self.driver.find_element(*self.CART_LINK).click()
+        self.wait.until(EC.element_to_be_clickable(self.CART_LINK)).click()
+        self.wait.until(EC.url_contains("cart.html"))
