@@ -10,6 +10,7 @@ class ProductsPage:
     BACKPACK_ADD_TO_CART_BUTTON = (By.ID, "add-to-cart-sauce-labs-backpack")
     BACKPACK_REMOVE_BUTTON = (By.ID, "remove-sauce-labs-backpack")
     CART_BADGE = (By.CLASS_NAME, "shopping_cart_badge")
+    CART_LINK = (By.CLASS_NAME, "shopping_cart_link")
 
     def __init__(self, driver):
         self.driver = driver
@@ -36,3 +37,6 @@ class ProductsPage:
 
     def get_cart_badge_text(self):
         return self.driver.find_element(*self.CART_BADGE).text
+
+    def open_cart(self):
+        self.driver.find_element(*self.CART_LINK).click()
