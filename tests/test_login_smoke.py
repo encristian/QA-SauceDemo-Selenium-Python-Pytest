@@ -1,4 +1,11 @@
 from pages.login_page import LoginPage
+from utils.test_data import (
+    VALID_USERNAME,
+    VALID_PASSWORD,
+    INVALID_USERNAME,
+    INVALID_PASSWORD,
+    LOGIN_ERROR_MESSAGE,
+)
 
 
 def test_login_page_is_displayed(driver):
@@ -14,7 +21,7 @@ def test_valid_login(driver):
     login_page = LoginPage(driver)
 
     login_page.open()
-    login_page.login("standard_user", "secret_sauce")
+    login_page.login(VALID_USERNAME, VALID_PASSWORD)
 
     assert "inventory.html" in driver.current_url
 
@@ -23,8 +30,8 @@ def test_invalid_login(driver):
     login_page = LoginPage(driver)
 
     login_page.open()
-    login_page.login("invalid_user", "wrong_password")
+    login_page.login(INVALID_USERNAME, INVALID_PASSWORD)
 
     error_message = login_page.get_error_message()
 
-    assert "Username and password do not match" in error_message
+    assert LOGIN_ERROR_MESSAGE in error_message

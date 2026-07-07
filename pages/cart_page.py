@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+from utils.config import INVENTORY_URL, CHECKOUT_STEP_ONE_URL
 
 
 class CartPage:
@@ -36,10 +37,10 @@ class CartPage:
             self.driver.get("https://www.saucedemo.com/cart.html")
 
     def continue_shopping(self):
-        self.driver.get("https://www.saucedemo.com/inventory.html")
+        self.driver.get(INVENTORY_URL)
 
     def is_checkout_button_displayed(self):
         return len(self.driver.find_elements(*self.CHECKOUT_BUTTON)) > 0
 
     def click_checkout(self):
-        self.driver.get("https://www.saucedemo.com/checkout-step-one.html")
+        self.driver.get(CHECKOUT_STEP_ONE_URL)

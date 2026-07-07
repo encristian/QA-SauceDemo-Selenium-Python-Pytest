@@ -1,6 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from utils.config import CHECKOUT_STEP_TWO_URL, CHECKOUT_COMPLETE_URL
 
 
 class CheckoutPage:
@@ -67,13 +68,13 @@ class CheckoutPage:
         return self.wait.until(EC.visibility_of_element_located(self.ERROR_MESSAGE)).text
 
     def continue_with_valid_information(self, first_name, last_name, postal_code):
-     self.fill_checkout_information(first_name, last_name, postal_code)
-     self.click_continue()
+        self.fill_checkout_information(first_name, last_name, postal_code)
+        self.click_continue()
 
-     try:
-        self.wait.until(EC.url_contains("checkout-step-two.html"))
-     except:
-        self.driver.get("https://www.saucedemo.com/checkout-step-two.html")
+        try:
+            self.wait.until(EC.url_contains("checkout-step-two.html"))
+        except:
+            self.driver.get(CHECKOUT_STEP_TWO_URL)
 
     def is_checkout_overview_page_displayed(self):
         title = self.wait.until(EC.visibility_of_element_located(self.PAGE_TITLE))
@@ -92,12 +93,12 @@ class CheckoutPage:
         return self.wait.until(EC.visibility_of_element_located(self.TOTAL)).text
 
     def click_finish(self):
-     self.click_element(self.FINISH_BUTTON)
+        self.click_element(self.FINISH_BUTTON)
 
-     try:
-        self.wait.until(EC.url_contains("checkout-complete.html"))
-     except:
-        self.driver.get("https://www.saucedemo.com/checkout-complete.html")
+        try:
+            self.wait.until(EC.url_contains("checkout-complete.html"))
+        except:
+            self.driver.get(CHECKOUT_COMPLETE_URL)
 
     def is_checkout_complete_page_displayed(self):
         title = self.wait.until(EC.visibility_of_element_located(self.PAGE_TITLE))

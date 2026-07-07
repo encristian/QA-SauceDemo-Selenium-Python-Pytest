@@ -1,10 +1,14 @@
 from pages.login_page import LoginPage
 from pages.products_page import ProductsPage
 from pages.cart_page import CartPage
-
-
-VALID_USERNAME = "standard_user"
-VALID_PASSWORD = "secret_sauce"
+from utils.config import CART_URL
+from utils.test_data import (
+    VALID_USERNAME,
+    VALID_PASSWORD,
+    BACKPACK_NAME,
+    BACKPACK_PRICE,
+    CART_QUANTITY,
+)
 
 
 def login_as_standard_user(driver):
@@ -20,7 +24,7 @@ def add_backpack_and_open_cart(driver):
 
     products_page.add_backpack_to_cart()
 
-    driver.get("https://www.saucedemo.com/cart.html")
+    driver.get(CART_URL)
 
     return CartPage(driver)
 
@@ -28,7 +32,7 @@ def add_backpack_and_open_cart(driver):
 def test_cart_page_is_displayed_after_clicking_cart_icon(driver):
     login_as_standard_user(driver)
 
-    driver.get("https://www.saucedemo.com/cart.html")
+    driver.get(CART_URL)
 
     cart_page = CartPage(driver)
 
@@ -46,9 +50,9 @@ def test_product_details_are_displayed_in_cart(driver):
 
     cart_text = cart_page.get_page_text()
 
-    assert "Sauce Labs Backpack" in cart_text
-    assert "$29.99" in cart_text
-    assert "1" in cart_text
+    assert BACKPACK_NAME in cart_text
+    assert BACKPACK_PRICE in cart_text
+    assert CART_QUANTITY in cart_text
 
 
 def test_remove_product_from_cart(driver):

@@ -1,14 +1,18 @@
 from pages.login_page import LoginPage
 from pages.products_page import ProductsPage
+from pages.cart_page import CartPage
 from pages.checkout_page import CheckoutPage
-
-
-VALID_USERNAME = "standard_user"
-VALID_PASSWORD = "secret_sauce"
-
-FIRST_NAME = "John"
-LAST_NAME = "Smith"
-POSTAL_CODE = "12345"
+from utils.test_data import (
+    VALID_USERNAME,
+    VALID_PASSWORD,
+    FIRST_NAME,
+    LAST_NAME,
+    POSTAL_CODE,
+    BACKPACK_NAME,
+    BACKPACK_PRICE,
+    CHECKOUT_FIRST_NAME_ERROR,
+    ORDER_COMPLETE_MESSAGE,
+)
 
 
 def login_as_standard_user(driver):
@@ -24,7 +28,8 @@ def start_checkout_with_backpack(driver):
 
     products_page.add_backpack_to_cart()
 
-    driver.get("https://www.saucedemo.com/checkout-step-one.html")
+    cart_page = CartPage(driver)
+    cart_page.click_checkout()
 
     return CheckoutPage(driver)
 
@@ -49,7 +54,7 @@ def test_checkout_with_empty_form_shows_error_message(driver):
 
     error_message = checkout_page.get_error_message()
 
-    assert "First Name is required" in error_message
+    assert CHECKOUT_FIRST_NAME_ERROR in error_message
 
 
 def test_checkout_with_valid_information_opens_overview_page(driver):
@@ -66,8 +71,8 @@ def test_checkout_overview_displays_product_and_price_information(driver):
 
     checkout_page.continue_with_valid_information(FIRST_NAME, LAST_NAME, POSTAL_CODE)
 
-    assert checkout_page.get_product_name() == "Sauce Labs Backpack"
-    assert "$29.99" in checkout_page.get_item_total_text()
+    assert checkout_page.get_product_name() == BACKPACK_NAME
+    assert BACKPACK_PRICE in checkout_page.get_item_total_text()
     assert "Tax:" in checkout_page.get_tax_text()
     assert "Total:" in checkout_page.get_total_text()
 
@@ -80,4 +85,4 @@ def test_complete_order_shows_confirmation_message(driver):
 
     assert "checkout-complete.html" in driver.current_url
     assert checkout_page.is_checkout_complete_page_displayed()
-    assert checkout_page.get_complete_header_text() == "Thank you for your order!"
+    assert checkout_page.get_complete_header_text() == ORDER_COMPLETE_MESSAGE

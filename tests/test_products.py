@@ -1,9 +1,6 @@
 from pages.login_page import LoginPage
 from pages.products_page import ProductsPage
-
-
-VALID_USERNAME = "standard_user"
-VALID_PASSWORD = "secret_sauce"
+from utils.test_data import VALID_USERNAME, VALID_PASSWORD
 
 
 def login_as_standard_user(driver):
