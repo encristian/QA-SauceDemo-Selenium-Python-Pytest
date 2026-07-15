@@ -12,16 +12,18 @@ https://www.saucedemo.com/
 
 The purpose of this project is to practice UI test automation using Selenium with Python.
 
-This project will include:
+This project covers:
 
 * Selenium WebDriver tests
 * Pytest test framework
-* Page Object Model
+* Page Object Model structure
 * Login tests
 * Products tests
 * Cart tests
 * Checkout tests
+* Test data and config separation
 * HTML test reports
+* Screenshots on test failure
 * Git and GitHub version control
 
 ---
@@ -34,6 +36,7 @@ This project will include:
 * pytest-html
 * Git
 * GitHub
+* Visual Studio Code
 
 ---
 
@@ -43,12 +46,23 @@ This project will include:
 QA-SauceDemo-Selenium-Python-Pytest/
 │
 ├── pages/
+│   ├── cart_page.py
+│   ├── checkout_page.py
+│   ├── login_page.py
+│   └── products_page.py
 │
 ├── tests/
-│   └── test_login_smoke.py
+│   ├── test_cart.py
+│   ├── test_checkout.py
+│   ├── test_login_smoke.py
+│   └── test_products.py
 │
 ├── utils/
+│   ├── config.py
+│   └── test_data.py
 │
+├── conftest.py
+├── pytest.ini
 ├── .gitignore
 ├── README.md
 └── requirements.txt
@@ -56,36 +70,128 @@ QA-SauceDemo-Selenium-Python-Pytest/
 
 ---
 
-## How to Run Tests
+## Test Scenarios Covered
 
-### 1. Create virtual environment
+### Login Tests
 
-```bash
-python -m venv .venv
-```
+* Verify login page is displayed
+* Verify valid login
+* Verify invalid login error message
 
-### 2. Activate virtual environment
+### Products Tests
 
-```bash
-.venv\Scripts\activate
-```
+* Verify Products page is displayed after login
+* Verify product list is displayed
+* Verify first product details are displayed
+* Verify Add to Cart updates cart badge
 
-### 3. Install dependencies
+### Cart Tests
 
-```bash
-pip install -r requirements.txt
-```
+* Verify Cart page is displayed
+* Verify product is displayed in cart
+* Verify product details are displayed in cart
+* Verify product can be removed from cart
+* Verify Continue Shopping redirects to Products page
 
-### 4. Run tests
+### Checkout Tests
+
+* Verify Checkout Information page is displayed
+* Verify checkout form fields are displayed
+* Verify empty checkout form shows error message
+* Verify valid checkout information opens Checkout Overview page
+* Verify Checkout Overview displays product and price information
+* Verify complete order shows confirmation message
+
+---
+
+## Page Object Model
+
+The project uses the Page Object Model pattern.
+
+Each page has its own class:
+
+* `LoginPage` handles login page actions and validations
+* `ProductsPage` handles products page actions and validations
+* `CartPage` handles cart page actions and validations
+* `CheckoutPage` handles checkout page actions and validations
+
+This makes the tests cleaner, easier to read and easier to maintain.
+
+---
+
+## Test Data and Config
+
+The project uses separate files for config and test data:
+
+* `config.py` stores application URLs
+* `test_data.py` stores usernames, passwords, checkout data and expected messages
+
+This keeps test data separate from test logic.
+
+---
+
+## Test Reports
+
+This project uses `pytest-html` to generate HTML test reports.
+
+Run tests:
 
 ```bash
 pytest
 ```
 
-### 5. Run tests with HTML report
+After execution, the HTML report is generated here:
+
+```text
+reports/report.html
+```
+
+If a test fails, a screenshot is automatically saved here:
+
+```text
+reports/screenshots/
+```
+
+The `reports/` folder is ignored by Git because it contains generated files.
+
+---
+
+## How to Run the Tests
+
+### 1. Clone the repository
 
 ```bash
-pytest --html=reports/report.html
+git clone <repository-url>
+```
+
+### 2. Open the project folder
+
+```bash
+cd QA-SauceDemo-Selenium-Python-Pytest
+```
+
+### 3. Create virtual environment
+
+```bash
+python -m venv .venv
+```
+
+### 4. Activate virtual environment
+
+```bash
+.venv\Scripts\activate
+```
+
+### 5. Install dependencies
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+### 6. Run tests
+
+```bash
+pytest
 ```
 
 ---
@@ -95,6 +201,23 @@ pytest --html=reports/report.html
 ```text
 18 passed
 ```
+
+---
+
+## What I Learned
+
+Through this project, I practiced:
+
+* Writing automated UI tests with Selenium
+* Using Pytest as a test framework
+* Creating a Page Object Model structure
+* Using reusable browser fixtures with `conftest.py`
+* Separating config and test data
+* Testing login, products, cart and checkout flows
+* Generating HTML test reports
+* Taking screenshots on test failure
+* Using Git commits
+* Structuring a QA Automation portfolio project
 
 ---
 
