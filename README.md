@@ -1,10 +1,25 @@
 # QA SauceDemo Selenium Python Pytest
 
+[![Selenium Python Tests](https://github.com/encristian/QA-SauceDemo-Selenium-Python-Pytest/actions/workflows/selenium-tests.yml/badge.svg)](https://github.com/encristian/QA-SauceDemo-Selenium-Python-Pytest/actions/workflows/selenium-tests.yml)
+
 This is a UI automation testing project built with **Python**, **Selenium WebDriver** and **Pytest**.
 
 The project tests the SauceDemo web application:
 
 https://www.saucedemo.com/
+
+---
+
+## Project Highlights
+
+- 18 automated UI tests
+- Page Object Model structure
+- Reusable Pytest browser fixture
+- Config and test data separation
+- HTML test report generation
+- Screenshots on test failure
+- GitHub Actions CI pipeline
+- Automated test execution on every push to `main`
 
 ---
 
@@ -231,6 +246,12 @@ pytest
 
 ```text
 18 passed
+```
+
+Latest test execution:
+
+```text
+All UI automation tests passed successfully.
 ```
 
 ---
